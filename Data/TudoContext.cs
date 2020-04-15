@@ -12,5 +12,7 @@ using Udemy1.Models;
         {
         }
 
-        public DbSet<Udemy1.Models.Departamento> Departamento { get; set; }
-    }
+        public DbSet<Departamento> Departamento { get; set; }
+        public DbSet<Vendedor> Vendedor { get; set; }
+        public DbSet<VendaGravada> VendaGravadas { get; set; }
+}
