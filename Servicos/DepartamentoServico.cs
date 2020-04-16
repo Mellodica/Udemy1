@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Udemy1.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Udemy1.Servicos
 {
@@ -15,10 +16,19 @@ namespace Udemy1.Servicos
             _context = context;
         }
 
-        public List<Departamento> FindAll()
+        public async Task<List<Departamento>> FindAllAsync()
+        {
+
+            // Trocar o ToList para o ToListAsync (EntityFrameWork)
+            return await _context.Departamento.OrderBy(x => x.Nome).ToListAsync();
+        }
+
+        /* 
+         * public List<Departamento> FindAll()
         {
             return _context.Departamento.OrderBy(x => x.Nome).ToList();
         }
+        */
 
     }
 }

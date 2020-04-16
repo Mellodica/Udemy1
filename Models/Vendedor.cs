@@ -35,7 +35,7 @@ namespace Udemy1.Models
         public double BaseSalary { get; set; }
 
 
-        [Required(ErrorMessage = "{0} obrigatório")]
+        //[Required(ErrorMessage = "{0} obrigatório")]
         public Departamento Departamento { get; set; }
 
 
