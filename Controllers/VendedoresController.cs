@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Udemy_1.Models;
 using Udemy1.Models;
 using Udemy1.Servicos;
 using Udemy1.Servicos.Erros;
@@ -51,13 +53,13 @@ namespace Udemy1.Controllers
         {
             if ( id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
 
             var obj = _vendedorServico.FindById(id.Value);
             if (obj == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id não encontrada" });
             }
 
             return View(obj);
@@ -81,7 +83,7 @@ namespace Udemy1.Controllers
             var obj = _vendedorServico.FindById(id.Value);
             if (obj == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
 
             return View(obj);
@@ -91,14 +93,14 @@ namespace Udemy1.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
 
             var obj = _vendedorServico.FindById(id.Value);
 
             if(obj == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id não encontrada" });
             }
             List<Departamento> departamentos = _departamentoServico.FindAll();
             VendedorViewModel viewModel = new VendedorViewModel { Vendedor = obj, Departamentos = departamentos };
@@ -112,7 +114,7 @@ namespace Udemy1.Controllers
         {
             if(id != vendedor.Id)
             {
-                return BadRequest();
+                return RedirectToAction(nameof(Error), new { message = "Id não encontrada" });
             }
 
             try
@@ -123,12 +125,22 @@ namespace Udemy1.Controllers
             catch (NotFoundException e)
             {
 
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = e.Message });
             }
             catch (DbConcurrencyException e)
             {
-                return BadRequest();
+                return RedirectToAction(nameof(Error), new { message = e.Message });
             }
+        }
+
+        public IActionResult Error(String message)
+        {
+            var viewModel = new ErrorViewModel
+            {
+                Mensagem = message,
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+            };
+            return View(viewModel);
         }
 
 
