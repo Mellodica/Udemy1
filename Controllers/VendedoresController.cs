@@ -12,10 +12,12 @@ namespace Udemy1.Controllers
     {
 
         private readonly VendedorServico _vendedorServico;
+        private readonly DepartamentoServico _departamentoServico;
 
-        public VendedoresController(VendedorServico vendedorServico)
+        public VendedoresController(VendedorServico vendedorServico, DepartamentoServico departamentoServico)
         {
             _vendedorServico = vendedorServico;
+            _departamentoServico = departamentoServico;
         }
 
         public IActionResult Index()
@@ -27,7 +29,10 @@ namespace Udemy1.Controllers
 
         public IActionResult Create()
         {
-            return View();
+
+            var departaments = _departamentoServico.FindAll();
+            var viewModel = new VendedorViewModel { Departamentos = departaments };
+            return View(viewModel);
         }
 
 

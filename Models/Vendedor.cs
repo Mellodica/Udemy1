@@ -13,6 +13,7 @@ namespace Udemy1.Models
         public DateTime Aniversario { get; set; }
         public double BaseSalary { get; set; }
         public Departamento Departamento { get; set; }
+        public int DepartamentoId { get; set; }
         public ICollection<VendaGravada> Vendas { get; set; } = new List<VendaGravada>();
 
 
