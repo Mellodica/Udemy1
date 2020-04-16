@@ -45,6 +45,7 @@ namespace Udemy_1
             services.AddScoped<SeedService>();
             services.AddScoped<VendedorServico>();
             services.AddScoped<DepartamentoServico>();
+            services.AddScoped<VendaGravadaServico>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
