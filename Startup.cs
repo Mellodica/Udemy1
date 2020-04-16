@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Udemy1.Data;
+using Udemy1.Servicos;
 
 namespace Udemy_1
 {
@@ -40,6 +41,7 @@ namespace Udemy_1
                     options.UseSqlServer(Configuration.GetConnectionString("TudoContext")));
 
             services.AddScoped<SeedService>();
+            services.AddScoped<VendedorServico>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
