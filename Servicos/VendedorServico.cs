@@ -38,9 +38,18 @@ namespace Udemy1.Servicos
 
         public async Task RemoveAsync(int id)
         {
-            var obj =  await _context.Vendedor.FindAsync(id);
-                        _context.Vendedor.Remove(obj);
-                       await _context.SaveChangesAsync(); 
+            try
+            {
+                var obj = await _context.Vendedor.FindAsync(id);
+                _context.Vendedor.Remove(obj);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException e)
+            {
+
+                throw new ErroDeIntegridade(e.Message);
+            }
+            
         }
 
         public async Task AtualizarAsync(Vendedor obj)

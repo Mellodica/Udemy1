@@ -75,8 +75,17 @@ namespace Udemy1.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int Id)
         {
-            await _vendedorServico.RemoveAsync(Id);
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                await _vendedorServico.RemoveAsync(Id);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (ErroDeIntegridade e)
+            {
+
+                return RedirectToAction(nameof(Error), new { message = e.Message });
+            }
+            
         }
 
         public async Task<IActionResult> Detalhe(int? id)
