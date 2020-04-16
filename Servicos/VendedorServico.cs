@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Udemy1.Models;
 using Microsoft.EntityFrameworkCore;
+using Udemy1.Servicos.Erros;
 
 namespace Udemy1.Servicos
 {
@@ -40,6 +41,26 @@ namespace Udemy1.Servicos
             var obj = _context.Vendedor.Find(id);
             _context.Vendedor.Remove(obj);
             _context.SaveChanges(); 
+        }
+
+        public void Atualizar(Vendedor obj)
+        {
+            if (!_context.Vendedor.Any(x => x.Id == obj.Id))
+            {
+                throw new NotFoundException("Id não encontrada");
+            }
+            try
+            {
+                _context.Update(obj);
+                _context.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException e)
+            {
+
+                throw new DbConcurrencyException(e.Message);
+                 
+            }
+          
         }
 
     }

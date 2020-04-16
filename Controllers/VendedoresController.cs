@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Udemy1.Models;
 using Udemy1.Servicos;
+using Udemy1.Servicos.Erros;
 
 namespace Udemy1.Controllers
 {
@@ -84,6 +85,50 @@ namespace Udemy1.Controllers
             }
 
             return View(obj);
+        }
+
+        public IActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var obj = _vendedorServico.FindById(id.Value);
+
+            if(obj == null)
+            {
+                return NotFound();
+            }
+            List<Departamento> departamentos = _departamentoServico.FindAll();
+            VendedorViewModel viewModel = new VendedorViewModel { Vendedor = obj, Departamentos = departamentos };
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(int id, Vendedor vendedor)
+        {
+            if(id != vendedor.Id)
+            {
+                return BadRequest();
+            }
+
+            try
+            {
+                _vendedorServico.Atualizar(vendedor);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (NotFoundException e)
+            {
+
+                return NotFound();
+            }
+            catch (DbConcurrencyException e)
+            {
+                return BadRequest();
+            }
         }
 
 
