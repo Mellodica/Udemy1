@@ -1,8 +1,9 @@
 ﻿using System;
-
+using Udemy1.Models.Enums;
 using Udemy1.Models.Enums;
 
 namespace Udemy1.Models
+
 {
     public class VendaGravada
     {
