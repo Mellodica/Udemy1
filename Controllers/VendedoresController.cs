@@ -46,6 +46,30 @@ namespace Udemy1.Controllers
 
         }
 
+        public IActionResult Delete(int? id)
+        {
+            if ( id == null)
+            {
+                return NotFound();
+            }
+
+            var obj = _vendedorServico.FindById(id.Value);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+
+            return View(obj);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete(int Id)
+        {
+            _vendedorServico.Remove(Id);
+            return RedirectToAction(nameof(Index));
+        }
+
 
     }
 }
