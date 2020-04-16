@@ -33,6 +33,7 @@ namespace Udemy1.Controllers
         public IActionResult Create()
         {
 
+            
             var departaments = _departamentoServico.FindAll();
             var viewModel = new VendedorViewModel { Departamentos = departaments };
             return View(viewModel);
@@ -43,7 +44,12 @@ namespace Udemy1.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Vendedor vendedor)
         {
-
+            if (!ModelState.IsValid)
+            {
+                var departamentos = _departamentoServico.FindAll();
+                var viewModel = new VendedorViewModel { Vendedor = vendedor, Departamentos = departamentos };
+                return View(viewModel);
+            }
             _vendedorServico.Insert(vendedor);
             return RedirectToAction(nameof(Index));
 
@@ -77,7 +83,7 @@ namespace Udemy1.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
 
             var obj = _vendedorServico.FindById(id.Value);
@@ -112,7 +118,14 @@ namespace Udemy1.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, Vendedor vendedor)
         {
-            if(id != vendedor.Id)
+
+            if (!ModelState.IsValid)
+            {
+                var departamentos = _departamentoServico.FindAll();
+                var viewModel = new VendedorViewModel { Vendedor = vendedor, Departamentos = departamentos};
+                return View(viewModel);
+            }
+            if (id != vendedor.Id)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id não encontrada" });
             }
